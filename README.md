@@ -21,7 +21,7 @@ $ yarn add istypes
 ### Type checking API:
 
 ```es6
-import { check } from 'istypes;
+import { check } from 'istypes';
 
 const positives = [
   check.isUndefined,
@@ -55,6 +55,8 @@ const negatives = [
 if (check.isUndefined(input)) {
    // ...
 }
+// ...
+
     
 ```
 
