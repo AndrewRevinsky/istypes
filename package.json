@@ -1,0 +1,44 @@
+{
+  "name": "istypes",
+  "version": "1.0.0",
+  "description": "type-checking utility library for signaling type-match/mismatch and grouping items by type",
+  "main": "lib/index.js",
+  "jsnext:main": "src/index.js",
+  "scripts": {
+    "test": "mocha --compilers js:babel-register src/**/*-test.js",
+    "test:watch": "npm run test -- --watch src/**/*-test.js",
+    "compile": "babel src --out-dir lib --ignore *-test.js",
+    "prepublish": "npm run compile",
+    "preversion": "npm run compile"
+  },
+  "repository": {
+    "url": "git+https://github.com/AndrewRevinsky/istypes.git",
+    "type": "git"
+  },
+  "keywords": [
+    "javascript",
+    "type",
+    "types",
+    "type",
+    "checking",
+    "typecheck",
+    "check",
+    "checks",
+    "checking",
+    "is",
+    "is-type"
+  ],
+  "author": "Andrew Revinsky <arevinsky@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/AndrewRevinsky/istypes/issues"
+  },
+  "homepage": "https://github.com/AndrewRevinsky/istypes#readme",
+  "devDependencies": {
+    "babel-cli": "^6.18.0",
+    "babel-core": "^6.21.0",
+    "babel-preset-es2015": "^6.18.0",
+    "chai": "^3.5.0",
+    "mocha": "^3.2.0"
+  }
+}
