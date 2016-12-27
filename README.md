@@ -63,7 +63,7 @@ if (check.isUndefined(input)) {
 ### Grouping by type:
 
 ```es6
-import { groupByType } from 'istypes;
+import { groupByType } from 'istypes';
 
 function (/* variable signature*/) {
   const args = [].slice.call(arguments);
