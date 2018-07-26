@@ -3,7 +3,7 @@
  */
 import { expect } from 'chai';
 
-import istypes, { check, groupByType } from '../index';
+import istypes, { check, groupByType } from '../src/index';
 
 describe('default export', () => {
   it('an exact copy of `check` (named export)', () => {

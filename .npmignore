@@ -7,5 +7,5 @@ npm-debug.log
 .npmignore
 memo.md
 #yarn.lock
-__tests__/
+tests/
 node_modules/
