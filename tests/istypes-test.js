@@ -69,6 +69,6 @@ describe('check (named export)', () => {
 
 describe('groupByType (named export)', () => {
   it('groups an array of items by their type', () => {
-    expect(groupByType).is.a.function;
+    expect(groupByType).is.a('function');
   })
 });

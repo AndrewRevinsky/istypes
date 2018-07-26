@@ -5,7 +5,7 @@
   "main": "lib/index.js",
   "jsnext:main": "src/index.js",
   "scripts": {
-    "test": "mocha --compilers js:babel-register src/**/*-test.js",
+    "test": "mocha --require @babel/register --require @babel/core tests/**/*-test.js",
     "test:watch": "npm run test -- --watch src/**/*-test.js",
     "compile": "babel src --out-dir lib --ignore *-test.js",
     "prepublish": "npm run compile",
