@@ -3,11 +3,7 @@
  */
 const
   __toString = Object.prototype.toString,
-  classNamePattern = /\s+(\w+)]/,
-  // eslint-disable-next-line no-void
-  sourceTypes = [
-    void 0, null, false, 0, '', [], {}, function () { }, /^/, new Date()
-  ];
+  classNamePattern = /\s+(\w+)]/;
 
 /**
  *
@@ -25,20 +21,27 @@ const
  *  isDate(*), isNotDate(*)
  * }}
  */
-export const check = (function() {
-  return sourceTypes.concat([ arguments ]).reduce((result, instance) => {
-    const originalName = __toString.call(instance);
-    const fullName = originalName.replace('DOMWindow', 'Undefined'); // PhantomJS bug
-    const shortName = fullName.match(classNamePattern)[1];
-    result['is' + shortName] = getTestFor(originalName);
-    result['isNot' + shortName] = getNotTestFor(originalName);
-    return result;
-  }, {});
-})();
-
-sourceTypes.splice(0); // release all instances
-
-export default check;
+const checksGen = function(...args) {
+  const // eslint-disable-next-line no-void
+    sourceTypes = [
+      void 0, null, false, 0, '', [], {}, function () { }, /^/, new Date()
+    ];
+  try {
+    return sourceTypes.concat([ arguments ], args).reduce((result, instance) => {
+      const originalName = __toString.call(instance);
+      const fullName = originalName.replace('DOMWindow', 'Undefined'); // PhantomJS bug
+      const shortName = fullName.match(classNamePattern)[1];
+      result['is' + shortName] = getTestFor(originalName);
+      result['isNot' + shortName] = getNotTestFor(originalName);
+      return result;
+    }, {});
+  } catch (_) {} finally {
+    sourceTypes.splice(0)
+  }
+};
+const defaultChecks = checksGen();
+export default defaultChecks;
+export const check = Object.assign(checksGen, defaultChecks);
 
 function getType(input) {
   return (__toString.call(input)).replace('DOMWindow', 'Undefined').match(classNamePattern)[1].toLowerCase();
