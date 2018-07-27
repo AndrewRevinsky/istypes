@@ -102,7 +102,7 @@ Checks are available even for types not included in the library:
 
 ```es6
 
-import { check } from 'istypes';
+import { check as checkGen } from 'istypes';
 
 const check = checkGen(new Map(), new Set(), new Error(), Symbol.iterator, Buffer.from(''));
 
