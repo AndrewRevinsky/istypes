@@ -12,7 +12,7 @@
     "preversion": "npm run compile"
   },
   "repository": {
-    "url": "git+https://github.com/AndrewRevinsky/istypes.git",
+    "url": "git+https://github.com/andrevinsky/istypes.git",
     "type": "git"
   },
   "keywords": [
@@ -31,9 +31,9 @@
   "author": "Andrew Revinsky <arevinsky@gmail.com>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/AndrewRevinsky/istypes/issues"
+    "url": "https://github.com/andrevinsky/istypes/issues"
   },
-  "homepage": "https://github.com/AndrewRevinsky/istypes#readme",
+  "homepage": "https://github.com/andrevinsky/istypes#readme",
   "devDependencies": {
     "@babel/cli": "^7.0.0-beta.54",
     "@babel/core": "^7.0.0-beta.54",

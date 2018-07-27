@@ -20,44 +20,99 @@ $ yarn add istypes
 
 ### Type checking API:
 
+_All samples are included in tests to guarantee their validity_
+
 ```es6
+
 import { check } from 'istypes';
 
-const positives = [
-  check.isUndefined,
-  check.isNull,
-  check.isBoolean,
-  check.isNumber,
-  check.isString,
-  check.isArray,
-  check.isObject,
-  check.isFunction,
-  check.isArguments,
-  check.isRegExp,
-  check.isDate
-];
+// positives
+check.isUndefined(undefined) // true
+check.isNull(null) // true
+check.isBoolean(true)  // true
+check.isNumber(0)  // true
+check.isNumber(parseInt('x')) // true (NaN is a number)
+check.isNumber(1 / 0)  // true (+Infinity is a number)
+check.isString('') // true
+check.isArray([])  // true
+check.isObject({}) // true
+check.isFunction(() => {}) // true
+(function () {
+    check.isArguments(arguments) // true
+})()
+check.isRegExp(/.*/)     // true
+check.isDate(new Date()) // true
 
-const negatives = [
-  check.isNotUndefined,
-  check.isNotNull,
-  check.isNotBoolean,
-  check.isNotNumber,
-  check.isNotString,
-  check.isNotArray,
-  check.isNotObject,
-  check.isNotFunction,
-  check.isNotArguments,
-  check.isNotRegExp,
-  check.isNotDate
-];
-
-// ...
-if (check.isUndefined(input)) {
-   // ...
-}
-// ...
-
+// negatives
+check.isNotUndefined(undefined) // false
+check.isNotNull(null) // false
+check.isNotBoolean(true)  // false
+check.isNotNumber(0)  // false
+check.isNotNumber(parseInt('x')) // false (NaN is a number)
+check.isNotNumber(1 / 0)  // false (+Infinity is a number)
+check.isNotString('') // false
+check.isNotArray([])  // false
+check.isNotObject({}) // false
+check.isNotFunction(() => {}) // false
+(function () {
+    check.isNotArguments(arguments) // false
+})()
+check.isNotRegExp(/.*/)     // false
+check.isNotDate(new Date()) // false
     
+```
+
+### Type extraction
+
+```es6
+console.log([
+    undefined,
+    null,
+    false,
+    0,
+    '',
+    [],
+    {},
+    function () {
+    },
+    arguments,
+    /$/,
+    new Date()
+].map(check.getType))
+```
+
+Outputs:
+```txt
+[ 'undefined',
+  'null',
+  'boolean',
+  'number',
+  'string',
+  'array',
+  'object',
+  'function',
+  'arguments',
+  'regexp',
+  'date' ]
+```
+
+### Extensibility
+
+Checks are available even for types not included in the library:
+
+```es6
+
+import { check } from 'istypes';
+
+const check = checkGen(new Map(), new Set(), new Error(), Symbol.iterator, Buffer.from(''));
+
+check.isUndefined(undefined) // true
+check.isMap(new Map()) // true
+check.getType(new Set()) // 'set'
+check.isUint8Array(Buffer.from('123')) // true
+check.getType(Buffer.from('456')) // 'uint8array'
+check.isSymbol(Symbol.species) // true
+
 ```
 
 ### Grouping by type:
@@ -65,9 +120,9 @@ if (check.isUndefined(input)) {
 ```es6
 import { groupByType } from 'istypes';
 
-function (/* variable signature*/) {
-  const args = [].slice.call(arguments);
-  const grouped = groupByType(args);
+function (/* variable signature, name? : string, options? : object, callback? : function */) {
+  const argsArr = Array.from(arguments);
+  const grouped = groupByType(argsArr);
   
   if (grouped.string) {
     // name provided
@@ -88,7 +143,7 @@ function (/* variable signature*/) {
 
 ## Contributing
 
-Please use the [issues page](https://github.com/AndrewRevinsky/istypes/issues) to report a bug or request a feature.
+Please use the [issues page](https://github.com/andrevinsky/istypes/issues) to report a bug or request a feature.
 
 ## Stay in Touch
 

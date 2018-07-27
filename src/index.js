@@ -34,14 +34,18 @@ const checksGen = function(...args) {
       result['is' + shortName] = getTestFor(originalName);
       result['isNot' + shortName] = getNotTestFor(originalName);
       return result;
-    }, {});
+    }, {
+      getType
+    });
   } catch (_) {} finally {
     sourceTypes.splice(0)
   }
 };
 const defaultChecks = checksGen();
-export default defaultChecks;
+
 export const check = Object.assign(checksGen, defaultChecks);
+
+export default defaultChecks;
 
 function getType(input) {
   return (__toString.call(input)).replace('DOMWindow', 'Undefined').match(classNamePattern)[1].toLowerCase();
