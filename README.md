@@ -109,9 +109,11 @@ const check = checkGen(new Map(), new Set(), new Error(), Symbol.iterator, Buffe
 check.isUndefined(undefined) // true
 check.isMap(new Map()) // true
 check.getType(new Set()) // 'set'
-check.isUint8Array(Buffer.from('123')) // true
-check.getType(Buffer.from('456')) // 'uint8array'
+check.isError(new Error()) // true
 check.isSymbol(Symbol.species) // true
+// here is a small catch with Buffer:
+check.isUint8Array(Buffer.from('123')) // true, after all, Buffer is a type 'Uint8Array'
+check.getType(Buffer.from('456')) // 'uint8array'
 
 ```
 

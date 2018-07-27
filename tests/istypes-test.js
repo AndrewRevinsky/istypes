@@ -323,9 +323,11 @@ describe('library exports: ', () => {
       expect(check.isUndefined(undefined)).to.equal(true); // true
       expect(check.isMap(new Map())).to.equal(true); // true
       expect(check.getType(new Set())).to.equal('set'); // 'set'
+      expect(check.isError(new Error())).to.equal(true); // true
+      expect(check.isSymbol(Symbol.species)).to.equal(true); // true
+      // here is a small catch with Buffer:
       expect(check.isUint8Array(Buffer.from('123'))).to.equal(true); // true, after all, Buffer is a type 'Uint8Array'
       expect(check.getType(Buffer.from('456'))).to.equal('uint8array'); // 'uint8array'
-      expect(check.isSymbol(Symbol.species)).to.equal(true); // true
 
     });
     
