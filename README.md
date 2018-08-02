@@ -59,8 +59,85 @@ check.isNotFunction(() => {}) // false
 })()
 check.isNotRegExp(/.*/)     // false
 check.isNotDate(new Date()) // false
-    
+
 ```
+
+### Checks for primitives:
+
+#### `isPrimitive(test)`
+
+A test for primitive-ness as found on [stackoverflow](https://stackoverflow.com/a/31538091/615239):
+
+```es6
+
+console.log([
+  // promitives :
+  undefined,
+  null,
+  true,
+  false,
+  0,
+  parseInt('x'),
+  1 / 0,
+  -1 / 0,
+  '',
+  Symbol.iterator,
+
+  // complex:
+  [],
+  {},
+  function () {
+  },
+  arguments,
+  /$/,
+  new Date(),
+  new Error('')
+].map(check.isPrimitive));
+
+```
+
+Outputs:
+```txt
+[ true, // undefined,
+  true, // null,
+  true, // true,
+  true, // false,
+  true, // 0,
+  true, // parseInt('x'),
+  true, // 1 / 0,
+  true, // -1 / 0,
+  true, // '',
+  true, // Symbol.iterator,
+  false,
+  false,
+  false,
+  false,
+  false,
+  false,
+  false ]
+```
+
+#### `isNotPrimitive(test)`
+
+Returns exactly opposite of `isPrimitive(test)`
+
+### Checks for iterables:
+
+TODO: add explanation
+
+#### `isIterable(test)` and `isNotIterable(test)`
+
+TODO: add sample code
+
+
+### Checks for array-like objects:
+
+TODO: add explanation
+
+#### `isArrayLike(test)` and `isNotArrayLike(test)`
+
+TODO: add sample code
+
 
 ### Type extraction
 
@@ -117,14 +194,17 @@ check.getType(Buffer.from('456')) // 'uint8array'
 
 ```
 
+Methods `getType(input)`, `isPrimitive(test)`, and `isNotPrimitive(test)` are not affected by extensibility.
+
 ### Grouping by type:
+
+A convenience method to stack values of an array-like object (e.g. `arguments`) under the keys named after items' types in a simple object. 
 
 ```es6
 import { groupByType } from 'istypes';
 
 function (/* variable signature, name? : string, options? : object, callback? : function */) {
-  const argsArr = Array.from(arguments);
-  const grouped = groupByType(argsArr);
+  const grouped = groupByType(argusments);
   
   if (grouped.string) {
     // name provided

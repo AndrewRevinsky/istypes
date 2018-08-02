@@ -27,15 +27,21 @@ const checksGen = function(...args) {
       void 0, null, false, 0, '', [], {}, function () { }, /^/, new Date()
     ];
   try {
-    return sourceTypes.concat([ arguments ], args).reduce((result, instance) => {
+    return sourceTypes.concat([ arguments ], args).reduce((api, instance) => {
       const originalName = __toString.call(instance);
       const fullName = originalName.replace('DOMWindow', 'Undefined'); // PhantomJS bug
       const shortName = fullName.match(classNamePattern)[1];
-      result['is' + shortName] = getTestFor(originalName);
-      result['isNot' + shortName] = getNotTestFor(originalName);
-      return result;
+      api['is' + shortName] = getTestFor(originalName);
+      api['isNot' + shortName] = getNotTestFor(originalName);
+      return api;
     }, {
-      getType
+      getType,
+      isPrimitive,
+      isNotPrimitive,
+      isIterable,
+      isNotIterable,
+      isArrayLike,
+      isNotArrayLike
     });
   } catch (_) {} finally {
     sourceTypes.splice(0)
@@ -47,15 +53,34 @@ export const check = Object.assign(checksGen, defaultChecks);
 
 export default defaultChecks;
 
-function getType(input) {
-  return (__toString.call(input)).replace('DOMWindow', 'Undefined').match(classNamePattern)[1].toLowerCase();
+function getType(test) {
+  return (__toString.call(test)).replace('DOMWindow', 'Undefined').match(classNamePattern)[1].toLowerCase();
 }
 
-export function groupByType(args) {
-  if (check.isNotArray(args)) {
+function isPrimitive(test) {
+  return (test !== Object(test));
+}
+function isNotPrimitive(test) {
+  return (test === Object(test));
+}
+function isIterable(test) {
+  return defaultChecks.isNotUndefined(test) && defaultChecks.isNotNull(test) && defaultChecks.isFunction(test[Symbol.iterator]);
+}
+function isNotIterable(test) {
+  return defaultChecks.isUndefined(test) || defaultChecks.isNull(test) || defaultChecks.isNotFunction(test[Symbol.iterator]);
+}
+function isArrayLike(test) {
+  return isNotPrimitive(test) && defaultChecks.isNotUndefined(test.length) && defaultChecks.isNotFunction(test);
+}
+function isNotArrayLike(test) {
+  return isPrimitive(test) || defaultChecks.isUndefined(test.length) || defaultChecks.isFunction(test);
+}
+
+export function groupByType(arraylike) {
+  if (isNotArrayLike(arraylike)) {
     return {};
   }
-  return args.reduce((memo, arg) => {
+  return Array.from(arraylike).reduce((memo, arg) => {
     memo[getType(arg)] = arg;
     return memo;
   }, {});

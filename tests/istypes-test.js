@@ -29,14 +29,13 @@ describe('library exports: ', () => {
       '',
       [],
       {},
-      function () {
-      },
+      function () {},
       arguments,
       /$/,
       new Date()
     ];
 
-    const instTypes = [
+   const instTypes = [
       'undefined',
       'null',
       'boolean',
@@ -78,10 +77,53 @@ describe('library exports: ', () => {
       'isNotDate'
     ];
 
+    const primitives = [
+      true, // undefined,
+      true, // null,
+      true, // false,
+      true, // 0,
+      true, // '',
+      false, // [],
+      false, // {},
+      false, // function () {},
+      false, // arguments,
+      false, // /$/,
+      false, // new Date()
+    ];
+
+    const iterables = [
+      false, // undefined,
+      false, // null,
+      false, // false,
+      false, // 0,
+      true, // '',
+      true, // [],
+      false, // {},
+      false, // function () {},
+      true, // arguments,
+      false, // /$/,
+      false, // new Date()
+    ];
+
+    const arrayLikes = [
+      false, // undefined,
+      false, // null,
+      false, // false,
+      false, // 0,
+      false, // '',
+      true, // [],
+      false, // {},
+      false, // function () {},
+      true, // arguments,
+      false, // /$/,
+      false, // new Date()
+    ];
+
+
     describe(`provides methods '.isXxx(input)' for positive type checking:`, () => {
 
       positives.forEach((pos, posIdx) =>
-        it(`method .${ pos }(input)`, () => {
+        it(`method .${ pos }(test)`, () => {
 
           const whatIs = check[ pos ];
 
@@ -95,12 +137,44 @@ describe('library exports: ', () => {
 
           });
         })
-      )
+      );
+
+      it('method .isPrimitive(test)', () => {
+        instances.forEach((subject, idx) => {
+          if (primitives[idx]) {
+            expect(check.isPrimitive(subject)).to.be.ok;
+          } else {
+            expect(check.isPrimitive(subject)).to.not.be.ok;
+          }
+
+        });
+      });
+
+     it('method .isIterable(test)', () => {
+        instances.forEach((subject, idx) => {
+          if (iterables[idx]) {
+            expect(check.isIterable(subject)).to.be.ok;
+          } else {
+            expect(check.isIterable(subject)).to.not.be.ok;
+          }
+        });
+      });
+
+     it('method .isArrayLike(test)', () => {
+        instances.forEach((subject, idx) => {
+          if (arrayLikes[idx]) {
+            expect(check.isArrayLike(subject)).to.be.ok;
+          } else {
+            expect(check.isArrayLike(subject)).to.not.be.ok;
+          }
+        });
+      });
+
     });
 
-    describe(`provides methods '.isNotXxx(input)' for negative type checking:`, () => {
+    describe(`provides methods '.isNotXxx(test)' for negative type checking:`, () => {
       negatives.forEach((neg, negIdx) =>
-        it(`method .${ neg }(input)`, () => {
+        it(`method .${ neg }(test)`, () => {
 
           const whatIsNot = check[ neg ];
 
@@ -114,11 +188,42 @@ describe('library exports: ', () => {
 
           });
         })
-      )
+      );
+
+      it('method .isNotPrimitive(test)', () => {
+        instances.forEach((subject, idx) => {
+          if (primitives[ idx ]) {
+            expect(check.isNotPrimitive(subject)).to.not.be.ok;
+          } else {
+            expect(check.isNotPrimitive(subject)).to.be.ok;
+          }
+        });
+      });
+
+      it('method .isNotIterable(test)', () => {
+        instances.forEach((subject, idx) => {
+          if (iterables[ idx ]) {
+            expect(check.isNotIterable(subject)).to.not.be.ok;
+          } else {
+            expect(check.isNotIterable(subject)).to.be.ok;
+          }
+        });
+      });
+
+      it('method .isNotArrayLike(test)', () => {
+        instances.forEach((subject, idx) => {
+          if (arrayLikes[ idx ]) {
+            expect(check.isNotArrayLike(subject)).to.not.be.ok;
+          } else {
+            expect(check.isNotArrayLike(subject)).to.be.ok;
+          }
+        });
+      });
+
     });
 
 
-    describe(`has a '.getType(input)' method to identify types..`, () => {
+    describe(`has a '.getType(test)' method to identify types..`, () => {
       instTypes.forEach((instType, typeIdx) =>
         it(`type: ${ instType }`, () => {
 
@@ -287,6 +392,63 @@ describe('library exports: ', () => {
 
     });
 
+    it('isPrimitive(test)', () => {
+      expect([
+        // promitives :
+        undefined,
+        null,
+        true,
+        false,
+        0,
+        parseInt('x'),
+        1 / 0,
+        -1 / 0,
+        '',
+        Symbol.iterator,
+
+        // complex:
+        [],
+        {},
+        function () {
+        },
+        arguments,
+        /$/,
+        new Date(),
+        new Error('')
+      ].map(check.isPrimitive)).to.deep.equal([
+        true, // undefined,
+        true, // null,
+        true, // true,
+        true, // false,
+        true, // 0,
+        true, // parseInt('x'),
+        true, // 1 / 0,
+        true, // -1 / 0,
+        true, // '',
+        true, // Symbol.iterator,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false ])
+    });
+
+    it('isIterable(test)', () => {
+      // TODO: add code
+    });
+    it('isNotIterable(test)', () => {
+      // TODO: add code
+    });
+    it('isArrayLike(test)', () => {
+      // TODO: add code
+    });
+
+    it('isNotArrayLike(test)', () => {
+      // TODO: add code
+    });
+
     it('type extraction', () => {
       expect([
         undefined,
@@ -334,8 +496,7 @@ describe('library exports: ', () => {
     it('grouping by type', () => {
 
       (function (/* variable signature, name? : string, options? : object, callback? : function */) {
-          const argsArr = Array.from(arguments);
-          const grouped = groupByType(argsArr);
+          const grouped = groupByType(arguments); //
 
           expect(grouped.string).to.be.ok;
           if (grouped.string) {
