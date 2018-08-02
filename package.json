@@ -1,6 +1,6 @@
 {
   "name": "istypes",
-  "version": "1.3.0",
+  "version": "1.4.0",
   "description": "type-checking utility library for testing type match/mismatch, testing for common type categories, getting types of tested instances, and a few extra",
   "main": "lib/index.js",
   "jsnext:main": "src/index.js",
