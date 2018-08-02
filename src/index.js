@@ -24,7 +24,11 @@ const
 const checksGen = function(...args) {
   const // eslint-disable-next-line no-void
     sourceTypes = [
-      void 0, null, false, 0, '', [], {}, function () { }, /^/, new Date()
+      void 0, null, false, 0, '', [], {}, function () { }, /^/, new Date(),
+      (() => { try { return new Map(); } catch(_){} })(),
+      (() => { try { return new Set(); } catch(_){} })(),
+      (() => { try { return new Error(''); } catch(_){} })(),
+      (() => { try { return Symbol(''); } catch(_){} })(),
     ];
   try {
     return sourceTypes.concat([ arguments ], args).reduce((api, instance) => {
